@@ -79,41 +79,45 @@ elif page == "📁 Step 1: File Intake & Parsing":
     with col1:
         st.image("step1_icon.png", width=64)
     with col2:
-        st.markdown("#### Upload Your Submission File")
+        st.markdown("#### Upload a Reinsurance Submission")
 
     st.markdown("""
-    ARPU begins by **reading and parsing your submission** — just like a pricing analyst.
-    
-    🧾 **Supported formats:** PDF, CSV, XLSX  
-    📦 Common contents:  
+    ARPU starts by **parsing the submission file**, just like a human underwriter would — extracting key attributes from raw data to prepare for analysis.
+
+    📤 **Accepted formats:** `PDF`, `XLSX`, `CSV`  
+    📦 **Expected contents:**  
     • Statement of Values (SOV)  
-    • Historical loss runs  
-    • Cat model outputs  
-    • Location-level exposures
+    • Historical Loss Runs  
+    • CAT Model Outputs  
+    • Location-Level Exposures  
     """)
 
-    uploaded_file = st.file_uploader("📤 Upload your submission", type=["pdf", "csv", "xlsx"])
-    use_sample = st.checkbox("Use sample submission instead", value=True)
+    uploaded_file = st.file_uploader("Choose your submission file", type=["pdf", "csv", "xlsx"])
+    use_sample = st.checkbox("Or use a sample submission", value=True)
 
     if uploaded_file or use_sample:
-        st.success("✅ Submission loaded successfully.")
-        st.markdown("🔍 Running LLM-powered parser to extract key risk insights...")
+        st.success("✅ Submission file loaded.")
+        st.markdown("🔍 **Running LLM-powered parser to extract insights...**")
 
-        with st.spinner("Extracting..."):
+        with st.spinner("Parsing submission..."):
             time.sleep(2)
 
-        st.markdown("### 📄 Submission Summary (Example)")
+        # =====================
+        #   Simulated Summary
+        # =====================
+        st.markdown("### 📄 Submission Snapshot (Example)")
         st.markdown("""
-        **Portfolio Snapshot:**  
-        • **Total Insured Value (TIV):** `$150M`  
-        • **Loss History:** 3 major events over 5 years  
-        • **PML (1‑in‑100):** `$60M`  
-        • **Region:** US Southeast — 🌀 Hurricane-prone  
-        
-        These features will inform pricing simulations and scenario modeling.
+        ARPU has extracted key attributes from your submission:
+
+        - **Total Insured Value (TIV):** `$150M`  
+        - **Loss History:** 3 major events in the past 5 years  
+        - **PML (1-in-100):** `$60M`  
+        - **Region:** US Southeast — 🌀 Hurricane-prone  
+
+        These features will feed directly into pricing simulations and risk evaluation in upcoming steps.
         """)
 
-        # Simulated preview DataFrame
+        # Simulated parsed table preview
         preview_df = pd.DataFrame({
             "Property_ID": [101, 102, 103, 104],
             "State": ["FL", "TX", "LA", "FL"],
@@ -123,12 +127,13 @@ elif page == "📁 Step 1: File Intake & Parsing":
             "Cat_PML_100yr ($)": [600_000, 400_000, 900_000, 500_000]
         })
 
-        with st.expander("🔽 View Raw Parsed Table"):
+        with st.expander("🔽 View Parsed Table"):
             st.dataframe(preview_df, use_container_width=True)
 
-        st.info("➡️ Continue to **Step 2** to summarize and simulate pricing.")
+        st.success("✅ Parsing complete. Ready to analyze and simulate in Step 2.")
     else:
-        st.warning("📂 Upload a file or use the sample to proceed.")
+        st.warning("📂 Please upload a file or select the sample submission to proceed.")
+
 
 
 # ----------------------------------
@@ -139,20 +144,20 @@ elif page == "🧠 Step 2: AI-Powered Summarization":
     st.image("step2_icon.png", width=100)
 
     st.markdown("""
-    ### 🔍 Submission Intelligence with AI  
-    ARPU uses a fine-tuned Large Language Model (LLM) to read the raw submission (PDFs, XLSX, CSV) and instantly extract key attributes for underwriting analysis.
-    
-    This includes:
-    - **Exposure Signals:** TIV, CAT model outputs, regional hazards  
-    - **Loss Experience:** Event years, incurred losses, trend lines  
-    - **Structural Risk Ratios:** PML/AAL vs TIV, year-over-year volatility  
-    - **Narrative Clues:** Notes on exclusions, coverage gaps, and data anomalies
+    ### 🔍 Intelligent Submission Parsing  
+    Our AI engine ingests raw submission files (PDF, XLSX, CSV) and instantly extracts key underwriting attributes using a fine-tuned Large Language Model (LLM).  
 
-    ⏱️ What normally takes hours of manual parsing is done in seconds, giving underwriters a clean view of risk for triage and modeling.
+    Within seconds, ARPU delivers a structured snapshot of submission risk — enabling faster triage, modeling, and pricing.
+
+    **Extracted Insights Include:**
+    - **📊 Exposure Metrics:** TIV, CAT model outputs, hazard zones  
+    - **📉 Loss History:** Key event years, incurred losses, trend curves  
+    - **⚖️ Risk Ratios:** AAL & PML vs TIV, year-over-year volatility  
+    - **📝 Underwriting Clues:** Exclusions, coverage anomalies, unstructured notes
     """)
 
     st.markdown("#### 🧾 AI-Generated Submission Summary")
-    
+
     summary = {
         "Total Insured Value (TIV)": "$150M",
         "Average Annual Loss (AAL)": "$8.2M",
@@ -169,7 +174,8 @@ elif page == "🧠 Step 2: AI-Powered Summarization":
     df_summary = pd.DataFrame.from_dict(summary, orient="index", columns=["Value"])
     st.table(df_summary)
 
-    st.info("✅ AI summarization complete. You can now proceed to RL pricing simulation in Step 3.")
+    st.success("✅ Submission successfully summarized. You're ready to move on to Step 3: RL-Powered Pricing Optimization.")
+
 
 
 # ----------------------------------
@@ -178,13 +184,19 @@ elif page == "🧠 Step 2: AI-Powered Summarization":
 elif page == "📈 Step 3: Simulation & Optimization":
     st.header("Step 3: RL‑Driven Pricing Simulation")
     st.image("step3_icon.png", width=100)
-    st.markdown("""
-    In this step, an RL agent explores different pricing structures to identify high-performing combinations of:
-    - **Retention**
-    - **Limit**
-    - **Rate-on-Line (ROL)**
 
-    The output is a landscape of trade-offs between **profit**, **expected loss**, and **CVaR**.
+    st.markdown("""
+    ### 🔄 Reinforcement Learning for Treaty Optimization
+
+    In this step, ARPU uses a Reinforcement Learning (RL) agent to simulate a range of reinsurance pricing structures.  
+    The agent intelligently explores combinations of:
+    - **Retention** (cedent's share of risk)
+    - **Limit** (maximum insurer payout)
+    - **Rate-on-Line (ROL)** (premium as a % of limit)
+
+    Each combination is scored on multiple risk-reward metrics, producing a **portfolio-efficient pricing frontier**.
+
+    ---
     """)
 
     # Simulate pricing output
@@ -200,8 +212,27 @@ elif page == "📈 Step 3: Simulation & Optimization":
         return pd.DataFrame(data)
 
     df = simulate_pricing()
+    
     st.markdown("### 📊 Candidate Pricing Structures")
     st.dataframe(df, use_container_width=True)
+
+    st.markdown("""
+    ### 🧠 How to Interpret the Results
+
+    Each row represents a **candidate structure** that balances premium income, expected loss, and tail risk:
+
+    - **Lower Retention** transfers more risk to the reinsurer, but often comes at a higher ROL.
+    - **Higher Limits** offer broader protection but increase the reinsurer’s exposure.
+    - **CVaR_99** estimates the insurer’s **worst-case loss** at the 99th percentile – crucial for solvency.
+    - **ROI (%)** estimates expected return, incorporating premium income and loss risk.
+
+    ---
+    
+    ✅ Use this table to identify structures that align with the cedent’s **risk appetite**, **capital constraints**, and **margin goals**.
+
+    ➡️ Proceed to **Step 4** to explore impact under different catastrophe scenarios.
+    """)
+
 
 # ----------------------------------
 # STEP 4: Interactive Insights
@@ -209,13 +240,22 @@ elif page == "📈 Step 3: Simulation & Optimization":
 elif page == "🧮 Step 4: Interactive Insights":
     st.header("Step 4: Portfolio What‑If Analysis")
     st.image("step4_icon.png", width=100)
+
     st.markdown("""
-    Adjust retention, limit, or catastrophe scenario to simulate the portfolio impact in real time.
-    
-    Common use cases:
-    * Test response to 1-in-250 cat events  
-    * Adjust treaty layers for margin or tail risk  
-    * Preview how pricing shifts affect ROI  
+    ### 🔁 Real-Time Scenario Simulation
+
+    Use this interactive tool to **test the impact of different treaty parameters** on portfolio performance under various catastrophe scenarios.
+
+    🔧 **You can adjust:**
+    - **Retention** (cedent’s risk share)
+    - **Limit** (maximum payout)
+    - **Catastrophe severity** (return periods: 1-in-100, 1-in-250, etc.)
+
+    🧪 **Common Use Cases:**
+    - Stress test portfolio under extreme CAT events  
+    - Analyze margin vs. tail risk trade-offs  
+    - Preview impact of treaty tweaks on ROI and solvency buffer (CVaR)
+    ---
     """)
 
     col1, col2, col3 = st.columns(3)
@@ -228,16 +268,33 @@ elif page == "🧮 Step 4: Interactive Insights":
             "Baseline (1-in-100)", "Moderate (1-in-150)", "Extreme (1-in-250)"
         ])
 
-    st.markdown(f"**Scenario:** Retention = {retention}M | Limit = {limit}M | Scenario = {cat_scenario}")
+    st.markdown(f"**🔍 Current Scenario:** Retention = `{retention}M` | Limit = `{limit}M` | Scenario = `{cat_scenario}`")
 
     if st.button("Simulate Impact"):
-        st.success("✅ Scenario simulated.")
+        st.success("✅ Scenario simulation complete.")
+
         result = {
             "Expected Loss": "$7.8M",
             "CVaR_99": "$21.6M",
             "ROI": "23.1%"
         }
+
+        st.markdown("### 📉 Simulation Output")
         st.table(pd.DataFrame.from_dict(result, orient="index", columns=["Value"]))
+
+        st.markdown("""
+        ### 📘 How to Interpret the Results
+
+        - **Expected Loss**: Average projected loss under the selected scenario.  
+        - **CVaR_99**: Conditional Value at Risk — average loss in the worst 1% of cases. Key for regulatory and solvency planning.  
+        - **ROI**: Net return after accounting for ROL and expected losses — a guide for structuring profitability.
+
+        ---
+        ✅ Use this to guide treaty negotiations, justify pricing decisions, or perform internal portfolio reviews.
+        """)
+    else:
+        st.info("🔄 Adjust parameters and click **Simulate Impact** to explore outcomes.")
+
 
 # ----------------------------------
 # STEP 5: Decision-Ready Output
@@ -245,26 +302,60 @@ elif page == "🧮 Step 4: Interactive Insights":
 elif page == "✅ Step 5: Decision-Ready Output":
     st.header("Step 5: Decision-Ready Output")
     st.image("step5_icon.png", width=100)
+
     st.markdown("""
-    After simulation and scenario testing, ARPU generates a final, exportable pricing recommendation:
-    
-    ✅ Transparent  
-    ✅ Clause-aware  
-    ✅ Aligned with portfolio objectives  
+    ### 🧾 Final Pricing Recommendation
+
+    After completing all simulations and scenario tests, ARPU generates a **decision-ready quote packet** that is:
+
+    - ✅ **Transparent** – all metrics are clearly defined  
+    - ✅ **Clause-Aware** – aligned with submission context and coverage details  
+    - ✅ **Risk-Optimized** – balancing margin, tail risk, and capital impact  
+    - ✅ **Actionable** – ready to support broker or internal discussions
+
+    ---
     """)
 
     recommendation = {
         "Recommended Retention": "$50M",
         "Limit": "$200M",
-        "ROL": "10.8%",
+        "Rate-on-Line (ROL)": "10.8%",
         "Expected Loss": "$7.2M",
         "CVaR (99%)": "$22.5M",
         "ROI": "20.5%",
-        "Notes": "Balanced structure with acceptable tail risk and margin"
+        "Underwriting Notes": "Balanced structure with acceptable tail risk and margin"
     }
-    st.markdown("### 📄 Final Recommendation")
+
+    st.markdown("### 📋 Recommended Structure")
     st.table(pd.DataFrame.from_dict(recommendation, orient="index", columns=["Value"]))
 
-    if st.button("Download PDF"):
-        st.success("📥 Your quote packet will be sent to your inbox.")
+    if st.button("📥 Generate Quote Packet"):
+        st.success("✅ Your quote packet is ready. Preview below:")
 
+        st.markdown("### 🧾 Quote Packet Preview")
+
+        st.markdown("""
+        **📌 Summary Recommendation:**  
+        - **Retention:** `$50M`  
+        - **Limit:** `$200M`  
+        - **ROL:** `10.8%`  
+        - **Expected Loss:** `$7.2M`  
+        - **CVaR (99%):** `$22.5M`  
+        - **ROI:** `20.5%`  
+
+        **🧠 Underwriting Notes:**  
+        Balanced structure with acceptable tail risk and margin.  
+        Aligned with portfolio objectives and provides sufficient capital efficiency.
+
+        ---
+
+        ✅ This output can now be exported as a PDF or used in internal reviews.
+        """)
+
+        # Optional placeholder for download button
+        st.download_button(
+            label="⬇️ Download PDF (Coming Soon)",
+            data="Quote packet content would go here.",
+            file_name="ARPU_Quote_Packet.pdf",
+            disabled=True
+        )
